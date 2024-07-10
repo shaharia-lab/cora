@@ -41,6 +41,26 @@ Cora can be incredibly useful in various scenarios, particularly when dealing wi
 
 By using Cora, you can streamline these processes, saving time and reducing the complexity of managing multiple files in various scenarios.
 
+## Difference between `cat` and `Cora`
+
+While the `cat` command is indeed useful for simple file concatenation, Cora offers several advanced features that make it more powerful and flexible for complex scenarios.
+
+| Feature | `cat` | `cora` |
+|---------|-------|--------|
+| Basic file concatenation | ✅ | ✅ |
+| Recursive directory traversal | ❌ | ✅ |
+| Flexible file selection (glob patterns) | ❌ | ✅ |
+| Exclude patterns | ❌ | ✅ |
+| Custom separators between files | ❌ | ✅ |
+| File path prefixes in output | ❌ | ✅ |
+| Built-in debugging mode | ❌ | ✅ |
+| Cross-platform consistency | ❌ (behavior may vary) | ✅ |
+| Large file handling | ✅ (but may require additional tools) | ✅ (optimized) |
+| Speed for simple concatenations | ✅ (generally faster) | ✅ (may have slight overhead) |
+| Requires external tools for complex tasks | ✅ (often used with find, xargs, etc.) | ❌ (all-in-one solution) |
+| Customizable output file | ❌ (requires output redirection) | ✅ (direct specification) |
+| Part of standard Unix toolset | ✅ | ❌ (requires installation) |
+
 ## Installation
 
 To install Cora, make sure you have Go installed on your system, then run:
