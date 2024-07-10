@@ -1,0 +1,57 @@
+name: Build and Upload Release Assets
+
+on:
+  release:
+    types: [created]
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build-and-upload:
+    name: Build and Upload Release Assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+      - name: Install dependencies
+        run: go mod download
+      - name: Install UPX
+        run: sudo apt-get update && sudo apt-get install -y upx
+      - name: Build and Compress
+        run: |
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o cora-linux-amd64 .
+          CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o cora-darwin-amd64 .
+          CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o cora-windows-amd64.exe .
+          upx --best cora-linux-amd64 cora-darwin-amd64 cora-windows-amd64.exe
+      - name: Upload Linux Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./cora-linux-amd64
+          asset_name: cora-linux-amd64
+          asset_content_type: application/octet-stream
+      - name: Upload macOS Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./cora-darwin-amd64
+          asset_name: cora-darwin-amd64
+          asset_content_type: application/octet-stream
+      - name: Upload Windows Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./cora-windows-amd64.exe
+          asset_name: cora-windows-amd64.exe
+          asset_content_type: application/octet-stream
