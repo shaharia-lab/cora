@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/shaharia-lab/cora/pkg/concatenator"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -26,9 +27,9 @@ func TestConcatenator(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	debugLog := newDebugLog(false)
-	concatenator := newConcatenator(outputFile, "\n---\n", "File: ", debugLog)
-	err := concatenator.concatenate(inputFiles)
+	debugLog := concatenator.NewDebugLog(false)
+	conc := concatenator.NewConcatenation(outputFile, "\n---\n", "File: ", debugLog)
+	err := conc.Concatenate(inputFiles)
 	require.NoError(t, err)
 
 	content, err := os.ReadFile(outputFile)
@@ -60,9 +61,9 @@ func TestConcatenatorLargeFiles(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	debugLog := newDebugLog(false)
-	concatenator := newConcatenator(outputFile, "\n", "File: ", debugLog)
-	err := concatenator.concatenate(inputFiles)
+	debugLog := concatenator.NewDebugLog(false)
+	conc := concatenator.NewConcatenation(outputFile, "\n", "File: ", debugLog)
+	err := conc.Concatenate(inputFiles)
 	require.NoError(t, err)
 
 	stat, err := os.Stat(outputFile)
@@ -85,7 +86,7 @@ func TestWalker(t *testing.T) {
 	root := t.TempDir()
 	createTestFiles(t, root)
 
-	debugLog := newDebugLog(false)
+	debugLog := concatenator.NewDebugLog(false)
 
 	tests := []struct {
 		name            string
@@ -207,14 +208,14 @@ func TestDebugLog(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			debugLog := newDebugLog(tt.enabled)
+			debugLog := concatenator.NewDebugLog(tt.enabled)
 
 			// Capture log output
 			var buf bytes.Buffer
 			log.SetOutput(&buf)
 			defer log.SetOutput(os.Stderr)
 
-			debugLog.print(tt.message)
+			debugLog.Print(tt.message)
 
 			if tt.enabled {
 				assert.Contains(t, buf.String(), tt.message)
