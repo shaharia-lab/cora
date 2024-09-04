@@ -56,7 +56,7 @@ func (cfg *config) run(cmd *cobra.Command, args []string) error {
 
 	debugLog := concatenator.NewDebugLog(cfg.EnableDebugging)
 	w := newWalker(cfg.SourceDirectory, cfg.ExcludePatterns, cfg.IncludePatterns, debugLog)
-	c := concatenator.NewConcatenator(cfg.OutputFile, cfg.Separator, cfg.PathPrefix, debugLog)
+	c := concatenator.NewConcatenation(cfg.OutputFile, cfg.Separator, cfg.PathPrefix, debugLog)
 
 	return cfg.process(w, c)
 }

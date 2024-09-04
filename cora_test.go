@@ -28,7 +28,7 @@ func TestConcatenator(t *testing.T) {
 	}
 
 	debugLog := concatenator.NewDebugLog(false)
-	conc := concatenator.NewConcatenator(outputFile, "\n---\n", "File: ", debugLog)
+	conc := concatenator.NewConcatenation(outputFile, "\n---\n", "File: ", debugLog)
 	err := conc.Concatenate(inputFiles)
 	require.NoError(t, err)
 
@@ -62,7 +62,7 @@ func TestConcatenatorLargeFiles(t *testing.T) {
 	}
 
 	debugLog := concatenator.NewDebugLog(false)
-	conc := concatenator.NewConcatenator(outputFile, "\n", "File: ", debugLog)
+	conc := concatenator.NewConcatenation(outputFile, "\n", "File: ", debugLog)
 	err := conc.Concatenate(inputFiles)
 	require.NoError(t, err)
 

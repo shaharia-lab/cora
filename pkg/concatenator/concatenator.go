@@ -21,8 +21,8 @@ type Concatenator struct {
 	pathPrefix []byte
 }
 
-// NewConcatenator creates a new Concatenator.
-func NewConcatenator(outputPath, separator, pathPrefix string, debugLog *DebugLog) *Concatenator {
+// NewConcatenation creates a new Concatenator.
+func NewConcatenation(outputPath, separator, pathPrefix string, debugLog *DebugLog) *Concatenator {
 	return &Concatenator{
 		outputPath: outputPath,
 		separator:  []byte(separator),
